@@ -14,3 +14,6 @@ run: $(PROG)
 
 clean:
 	@rm -f *.o $(PROG) $(TESTS) $(PROG).out
+
+test:
+	@./test_keyfilter.sh
