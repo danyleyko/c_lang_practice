@@ -17,3 +17,6 @@ clean:
 
 test:
 	@./test_keyfilter.sh
+
+adresy:
+	@echo "Praha\nBrno\nBruntal\nBratislava" > adresy.txt
