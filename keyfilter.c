@@ -40,7 +40,6 @@ enum dataType
 // Declare function before main
 void ParseData(char bufferList[MAX_NUM_ADDRESSES][MAX_ADDRESS_LENGTH], char prefix[MAX_ADDRESS_LENGTH], int* lineCounter, int argc, char* argv[], int* dType);
 void ParseBuffer(char bufferList[MAX_NUM_ADDRESSES][MAX_ADDRESS_LENGTH], char prefix[MAX_ADDRESS_LENGTH], int dType, int* lineCounter);
-void ReadData(char bufferList[MAX_NUM_ADDRESSES][MAX_ADDRESS_LENGTH], int* lineCounter);
 void error_messages(int error);
 void removeDuplicates(char str[]);
 void outputResult(char* message, char* result);
@@ -54,7 +53,7 @@ int main(int argc, char *argv[])
 {
     // My bufferList its matrix, which columns - lines and rows - length of input word
     char bufferList[MAX_NUM_ADDRESSES][MAX_ADDRESS_LENGTH];
-    
+
     // just prefix
     char prefix[MAX_ADDRESS_LENGTH];
 
@@ -67,43 +66,68 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-/// @brief Helper function for reading data
-/// @param lineCounter line count in input database
-void ReadData(char bufferList[MAX_NUM_ADDRESSES][MAX_ADDRESS_LENGTH], int* lineCounter) 
-{
-    while (fgets(bufferList[*lineCounter], MAX_ADDRESS_LENGTH, stdin) != NULL) 
-    {
-        // Remove the newline character at the end of each line
-        size_t len = strlen(bufferList[*lineCounter]);
-        if (len > 0 && bufferList[*lineCounter][len - 1] == '\n') 
-        {
-            bufferList[*lineCounter][len - 1] = '\0';
-        }
-        (*lineCounter)++;
-    }
-}
-
 /// @brief Function For parsing data
-void ParseData(char bufferList[MAX_NUM_ADDRESSES][MAX_ADDRESS_LENGTH], 
-              char prefix[MAX_ADDRESS_LENGTH], 
-              int* lineCounter, int argc, char* argv[], int* dType) 
+void ParseData(char bufferList[MAX_NUM_ADDRESSES][MAX_ADDRESS_LENGTH],
+              char prefix[MAX_ADDRESS_LENGTH],
+              int* lineCounter, int argc, char* argv[], int* dType)
 {
-    
+    // Initialize memory for bufferList and prefix
+    for (int index = 0; index < MAX_NUM_ADDRESSES; index++)
+    {
+        for (int nextIndex = 0; nextIndex < MAX_ADDRESS_LENGTH; nextIndex++)
+        {
+            bufferList[index][nextIndex] = '\0';
+        }
+    }
+
+    // Initialize memory for prefix
+    for (int index = 0; index < MAX_ADDRESS_LENGTH; index++)
+    {
+        prefix[index] = '\0';
+    }
+
     // User input list of addresses && prefix input
-    if (argc > 1) {
+    if (argc > 1)
+    {
         strcpy(prefix, argv[1]);
-        (*lineCounter)++;
-        ReadData(bufferList, lineCounter);
+        (*lineCounter) = 0; // Reset lineCounter
+
+        // Read the list of addresses
+        while (fgets(bufferList[*lineCounter], MAX_ADDRESS_LENGTH, stdin) != NULL)
+        {
+            // Remove the newline character at the end of each line
+            size_t len = strlen(bufferList[*lineCounter]);
+            if (len > 0 && bufferList[*lineCounter][len - 1] == '\n')
+            {
+                bufferList[*lineCounter][len - 1] = '\0';
+            }
+            (*lineCounter)++;
+        }
+
         (*dType) = both;
     }
     // User input list of addresses but without prefix input
-    else if (argc == 1) {
-        ReadData(bufferList, lineCounter);
+    else if (argc == 1)
+    {
+        (*lineCounter) = 0; // Reset lineCounter
+
+        // Read the list of addresses
+        while (fgets(bufferList[*lineCounter], MAX_ADDRESS_LENGTH, stdin) != NULL)
+        {
+            // Remove the newline character at the end of each line
+            size_t len = strlen(bufferList[*lineCounter]);
+            if (len > 0 && bufferList[*lineCounter][len - 1] == '\n')
+            {
+                bufferList[*lineCounter][len - 1] = '\0';
+            }
+            (*lineCounter)++;
+        }
+
         (*dType) = list;
     }
 
-    // input database is empty
-    if(bufferList[0][0] == '\0')
+    // Input database is empty
+    if (bufferList[0][0] == '\0')
     {
         outputResult(NOT_FOUND, bufferList[0]);
     }
