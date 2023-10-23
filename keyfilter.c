@@ -180,7 +180,7 @@ void ParseBuffer(char bufferList[MAX_NUM_ADDRESSES][MAX_ADDRESS_LENGTH],
         int foundLineIndex = -1;
 
         // Searching prefix in database
-        for (int line = 1; line < (*lineCounter); line++)
+        for (int line = 0; line < (*lineCounter); line++)
         {
             char cuttedString[MAX_ADDRESS_LENGTH];
             strncpy(cuttedString, bufferList[line], strlen(prefix) + 1);
@@ -194,7 +194,7 @@ void ParseBuffer(char bufferList[MAX_NUM_ADDRESSES][MAX_ADDRESS_LENGTH],
                 result[result_index++] += toupper(bufferList[line][strlen(prefix)]);
             }
         }
-
+        
         removeDuplicates(result);
 
         // Output messages
