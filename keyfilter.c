@@ -130,7 +130,7 @@ void ParseBuffer(char bufferList[MAX_NUM_ADDRESSES][MAX_ADDRESS_LENGTH],
             char tempArray[MAX_ADDRESS_LENGTH];
             strcpy(tempArray, bufferList[line]);
 
-            if(tempArray != NULL)
+            if(tempArray[0] != '\0')
             {
                 result[result_index++] += toupper(tempArray[0]);
             }
